@@ -17,6 +17,15 @@ onMounted(async () => {
   <main style="display: flex; align-items: center; justify-content: center;">
     <div style="text-align: center;">
       <button
+        style="
+          padding: 10px 20px;
+          background-color: rgb(229, 231, 235);
+          color: black;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin: 10px;
+        "
         @click="async () => {
           const dummy = new Dummy();
           dummy
