@@ -7,6 +7,10 @@ export class Guide extends Model {
   guidanceName!: string;
   followerName!: string;
 
+
+  route!: string;
+  routeParams!: { [key: string]: string | string[] };
+
   focusId!: string;
   focusType!: string;
 }
