@@ -15,7 +15,6 @@ export function useRealtimeValue<T extends BaseModel>(type: ModelStatic<T>, id?:
   };
 
   onMounted(() => {
-    console.log('mounting');
     const event = onDocChange(handleDocChange);
 
     onBeforeUnmount(() => {
