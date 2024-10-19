@@ -31,7 +31,13 @@ function getPaidColor(percentage: number) {
 <template>
   <main class="top-0 h-full w-full">
     <div>
-      <div class="flex justify-end">
+      <div class="flex justify-end gap-4">
+        <button
+          class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
+          @click="router.push({ name: 'realtime-value', params: { id: 'new' } })"
+        >
+          Add New
+        </button>
         <button
           class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
           @click="async () => {
@@ -56,7 +62,7 @@ function getPaidColor(percentage: number) {
               .save();
           }"
         >
-          Click to add fake invoice
+          Create Fake Data
         </button>
       </div>
 
