@@ -9,6 +9,8 @@ export default {
       colors: {
         success: '#179C5F',
         error: '#FF3B30',
+        info: '#007AFF',
+        warning: '#FF9500',
         vue: {
           50: '#f3f9f6',
           100: '#e0f0eb',

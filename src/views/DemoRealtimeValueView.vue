@@ -5,7 +5,7 @@ import { useRealtimeValue } from '@/composables/useRealtimeValue';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
 import { formatNumber } from '@/utils/number';
 import { cn } from '@/utils/tailwind';
-import { CheckCircle } from 'lucide-vue-next';
+import { CheckCircle, InfoIcon } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -13,12 +13,28 @@ const route = useRoute();
 const router = useRouter();
 const id = route.params.id === 'new' ? undefined : route.params.id as string | undefined;
 const invoice = useRealtimeValue(SalesInvoice, id);
-const saved = ref(false);
+const saved = ref<boolean | undefined>(undefined);
+const beingUpdated = ref(false);
 
 watch(() => saved.value, () => {
   if (saved.value) {
+    beingUpdated.value = false;
     setTimeout(() => {
-        saved.value = false;
+      saved.value = false;
+  }, 3000);
+  }
+});
+
+watch([() => invoice.value._meta._rev, () => saved.value], ([rev, isSaved], [oldRev]) => {
+  if (isSaved === undefined && rev !== oldRev && oldRev !== undefined) {
+    beingUpdated.value = true;
+  }
+});
+
+watch(() => beingUpdated.value, () => {
+  if (beingUpdated.value) {
+    setTimeout(() => {
+        beingUpdated.value = false;
     }, 3000);
   }
 });
@@ -31,9 +47,14 @@ async function save() {
 
 <template>
   <div>
-    <alert title="Invoice Saved!" :show="saved">
+    <alert type="success" title="Invoice saved!" :show="saved">
       <template #icon>
-        <CheckCircle class="w-5 h-5 inline-block mr-2 mt-0.5" />
+        <check-circle class="w-5 h-5 inline-block mr-2 mt-0.5" />
+      </template>
+    </alert>
+    <alert type="info" title="Invoice was updated by other user!" :show="beingUpdated">
+      <template #icon>
+        <info-icon class="w-5 h-5 inline-block mr-2 mt-0.5" />
       </template>
     </alert>
     <div class="flex flex-row gap-4">
