@@ -12,7 +12,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
       <nav>
         <RouterLink to="/realtime-list">Real Time List Example</RouterLink>
-        <RouterLink to="/realtime-value/new">Real Time Value Example</RouterLink>
+        <RouterLink to="/realtime/new">Real Time Example</RouterLink>
       </nav>
     </div>
   </header>

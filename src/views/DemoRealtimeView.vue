@@ -57,16 +57,19 @@ async function save() {
         <info-icon class="w-5 h-5 inline-block mr-2 mt-0.5" />
       </template>
     </alert>
-    <div class="flex flex-row gap-4">
-      <back-button
-        @click="router.replace({ name: 'realtime-list' })"
-      />
-      <button
-        class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
-        @click="save"
-      >
-        Save
-      </button>
+    <div class="flex justify-between">
+      <div class="text-2xl font-semibold">{{ id ? 'Update invoice' : 'Create new invoice' }}</div>
+      <div class="flex flex-row gap-4">
+        <back-button
+          @click="router.replace({ name: 'realtime-list' })"
+          />
+          <button
+          class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
+          @click="save"
+        >
+          Save
+        </button>
+      </div>
     </div>
     <div class="flex flex-row gap-6">
       <div class="mt-4 w-[5%]">

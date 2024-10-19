@@ -9,8 +9,8 @@ const router = createRouter({
       component: () => import('../views/DemoRealtimeListView.vue')
     },
     {
-      path: '/realtime-value/:id',
-      name: 'realtime-value',
+      path: '/realtime/:id',
+      name: 'realtime',
       component: () => import('../views/DemoRealtimeView.vue')
     }
   ]

@@ -36,7 +36,7 @@ function getPaidColor(percentage: number) {
       <div class="flex justify-end gap-4">
         <button
           class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
-          @click="router.push({ name: 'realtime-value', params: { id: 'new' } })"
+          @click="router.push({ name: 'realtime', params: { id: 'new' } })"
         >
           Add New
         </button>
@@ -89,7 +89,7 @@ function getPaidColor(percentage: number) {
                 v-for="invoice in salesInvoices"
                 :key="invoice.id"
                 class="bg-white hover:bg-gray-200 text-gray-800 border-b border-slate-300 cursor-pointer"
-                @click="() => router.push({ name: 'realtime-value', params: { id: invoice.id } })"
+                @click="() => router.push({ name: 'realtime', params: { id: invoice.id } })"
               >
                 <td width="5%" class="pt-4 px-4 py-2">
                   <div :style="{ backgroundColor: invoice.color }" class="w-4 h-4 rounded-full"></div>
