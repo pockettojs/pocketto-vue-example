@@ -30,33 +30,36 @@ function getPaidColor(percentage: number) {
 
 <template>
   <main class="top-0 h-full w-full">
-    <div class="text-center">
-      <button
-        class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
-        @click="async () => {
-          const taxRate = 7;
-          const subtotalAmount = faker.number.float({ min: 1, max: 500, fractionDigits: 0 });
-          let taxAmount = subtotalAmount * taxRate / 100;
-          taxAmount = Math.round(taxAmount * 100) / 100;
-          const totalAmount = subtotalAmount + taxAmount;
+    <div>
+      <div class="flex justify-end">
+        <button
+          class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
+          @click="async () => {
+            const taxRate = 7;
+            const subtotalAmount = faker.number.float({ min: 1, max: 500, fractionDigits: 0 });
+            let taxAmount = subtotalAmount * taxRate / 100;
+            taxAmount = Math.round(taxAmount * 100) / 100;
+            const totalAmount = subtotalAmount + taxAmount;
 
-          const customerName = `${faker.name.firstName()} ${faker.name.lastName()}`;
-          const invoice = new SalesInvoice();
-          invoice.fill({
-            customerName,
-            subtotalAmount,
-            taxRate,
-            taxAmount,
-            totalAmount,
-            paidAmount: faker.number.float({ min: 0, max: totalAmount, fractionDigits: 0 }),
-          });
-          await invoice
-            .setRandomHexColor()
-            .save();
-        }"
-      >
-        Click to add fake invoice
-      </button>
+            const customerName = `${faker.name.firstName()} ${faker.name.lastName()}`;
+            const invoice = new SalesInvoice();
+            invoice.fill({
+              customerName,
+              subtotalAmount,
+              taxRate,
+              taxAmount,
+              totalAmount,
+              paidAmount: faker.number.float({ min: 0, max: totalAmount, fractionDigits: 0 }),
+            });
+            await invoice
+              .setRandomHexColor()
+              .save();
+          }"
+        >
+          Click to add fake invoice
+        </button>
+      </div>
+
       <div class="table-container">
         <table width="100%">
           <thead>
@@ -65,7 +68,7 @@ function getPaidColor(percentage: number) {
               <th width="30%" class="bg-vue-700 text-white font-medium px-4 py-2">Customer Name</th>
               <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2">Subtotal</th>
               <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2">Tax</th>
-              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2">Grand Total</th>
+              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2">Total</th>
               <th width="20%" class="rounded-tr-md bg-vue-700 text-white font-medium px-4 py-2">Paid Amount</th>
             </tr>
           </thead>
@@ -84,12 +87,12 @@ function getPaidColor(percentage: number) {
                   <div :style="{ backgroundColor: invoice.color }" class="w-4 h-4 rounded-full"></div>
                 </td>
                 <td width="30%" class="px-4 py-2">{{ invoice.customerName }}</td>
-                <td width="15%" class="px-4 py-2 text-right">{{ formatNumber(invoice.subtotalAmount) }}</td>
-                <td width="10%" class="px-4 py-2 text-right">{{ formatNumber(invoice.taxAmount) }}</td>
-                <td width="15%" class="px-4 py-2 text-right">{{ formatNumber(invoice.totalAmount) }}</td>
-                <td width="20%" class="py-2 text-right">
+                <td width="15%" class="px-4 py-2"><div class="text-right">{{ formatNumber(invoice.subtotalAmount) }}</div></td>
+                <td width="10%" class="px-4 py-2"><div class="text-right">{{ formatNumber(invoice.taxAmount) }}</div></td>
+                <td width="15%" class="px-4 py-2"><div class="text-right">{{ formatNumber(invoice.totalAmount) }}</div></td>
+                <td width="20%" class="py-2">
                   <div :class="cn(
-                    'h-1 rounded-full bg-gray-200 mt-[-12px]',
+                    'h-1 rounded-full bg-gray-300 mt-[-12px]',
                   )">
                     <div 
                       :class="cn(
@@ -100,7 +103,7 @@ function getPaidColor(percentage: number) {
                         width: invoice.paidPercentage + '%',
                       }"
                     ></div>
-                  <div>{{ formatNumber(invoice.paidAmount) }}</div>
+                  <div class="text-right">{{ formatNumber(invoice.paidAmount) }}</div>
                 </div>
                 </td>
               </tr>

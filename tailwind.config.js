@@ -7,6 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        success: '#179C5F',
+        error: '#FF3B30',
         vue: {
           50: '#f3f9f6',
           100: '#e0f0eb',
