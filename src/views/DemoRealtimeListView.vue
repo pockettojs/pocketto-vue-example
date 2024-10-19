@@ -3,7 +3,7 @@ import { useRealtimeList } from '@/composables/useRealtimeList';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
 import { onMounted, ref } from 'vue';
 import { faker } from '@faker-js/faker';
-import { cn } from '@/utils/tailwind';
+import { cn } from '@/utils/cn';
 import { useRouter } from 'vue-router';
 import { formatNumber } from '@/utils/number';
 

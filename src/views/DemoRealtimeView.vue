@@ -4,7 +4,7 @@ import BackButton from '@/components/BackButton.vue';
 import { useRealtime } from '@/composables/useRealtime';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
 import { formatNumber } from '@/utils/number';
-import { cn } from '@/utils/tailwind';
+import { cn } from '@/utils/cn';
 import { CheckCircle, InfoIcon } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';

@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { cn } from '@/utils/tailwind';
+import { cn } from '@/utils/cn';
 import { defineProps } from 'vue';
 
 defineProps<{
