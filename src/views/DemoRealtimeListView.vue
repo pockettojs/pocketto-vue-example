@@ -74,10 +74,10 @@ function getPaidColor(percentage: number) {
             <tr>
               <th width="5%" class="rounded-tl-md bg-vue-700 text-white font-medium px-4 py-2"></th>
               <th width="30%" class="bg-vue-700 text-white font-medium px-4 py-2">Customer Name</th>
-              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2">Subtotal</th>
-              <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2">Tax</th>
-              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2">Total</th>
-              <th width="20%" class="rounded-tr-md bg-vue-700 text-white font-medium px-4 py-2">Paid Amount</th>
+              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Subtotal</div></th>
+              <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Tax</div></th>
+              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Total</div></th>
+              <th width="20%" class="rounded-tr-md bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Paid Amount</div></th>
             </tr>
           </thead>
         </table>
@@ -142,8 +142,15 @@ function getPaidColor(percentage: number) {
 }
 
 .table-body {
-  height: 500px; /* Adjust the height to your needs */
+  height: 300px; /* Adjust the height to your needs */
   overflow-y: auto;
+}
+
+@media (min-width: 1024px) {
+  .table-body {
+    height: 600px; /* Adjust the height to your needs */
+    overflow-y: auto;
+  }
 }
 
 .table-body table {
