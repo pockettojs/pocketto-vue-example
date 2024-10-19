@@ -3,9 +3,12 @@ import { useRealtimeList } from '@/composables/useRealtimeList';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
 import { onMounted, ref } from 'vue';
 import { faker } from '@faker-js/faker';
+import { cn } from '@/utils/tailwind';
+import { useRouter } from 'vue-router';
 
 const initList = ref<SalesInvoice[]>([]);
 const salesInvoices = useRealtimeList(SalesInvoice, { value: initList as any, order: 'desc' });
+const router = useRouter();
 
 onMounted(async () => {
   const result = await SalesInvoice.all();
@@ -16,16 +19,26 @@ function formatNumber(value: number) {
   return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+function getPaidColor(percentage: number) {
+  if (percentage >= 50) {
+    return 'bg-vue-500';
+  }
+  if (percentage >= 20) {
+    return 'bg-yellow-500';
+  }
+  return 'bg-red-500';
+}
+
 </script>
 
 <template>
   <main class="top-0 h-full w-full">
     <div class="text-center">
       <button
-        class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-semibold py-2 px-4 rounded"
+        class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
         @click="async () => {
           const taxRate = 7;
-          const subtotalAmount = faker.number.float({ min: 1, max: 500, fractionDigits: 0 }) * 100;
+          const subtotalAmount = faker.number.float({ min: 1, max: 500, fractionDigits: 0 });
           let taxAmount = subtotalAmount * taxRate / 100;
           taxAmount = Math.round(taxAmount * 100) / 100;
           const totalAmount = subtotalAmount + taxAmount;
@@ -38,43 +51,102 @@ function formatNumber(value: number) {
             taxRate,
             taxAmount,
             totalAmount,
-            paidAmount: faker.number.float({ min: 0, max: totalAmount / 100, fractionDigits: 0 }) * 100,
+            paidAmount: faker.number.float({ min: 0, max: totalAmount, fractionDigits: 0 }),
           });
           await invoice
             .setRandomHexColor()
             .save();
         }"
       >
-        Click to add invoice
+        Click to add fake invoice
       </button>
-      <table width="100%">
-        <thead>
-          <tr>
-            <th width="5%" class="bg-vue-700 text-white font-medium px-4 py-2"></th>
-            <th width="40%" class="bg-vue-700 text-white font-medium px-4 py-2">Customer Name</th>
-            <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2">Subtotal</th>
-            <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2">Tax</th>
-            <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2">Grand Total</th>
-            <th width="20%" class="bg-vue-700 text-white font-medium px-4 py-2">Paid Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(invoice, index) in salesInvoices"
-            :key="invoice.id"
-            class="bg-white hover:bg-gray-200 text-gray-800 cursor-pointer"
+      <div class="table-container">
+        <table width="100%">
+          <thead>
+            <tr>
+              <th width="5%" class="rounded-tl-md bg-vue-700 text-white font-medium px-4 py-2"></th>
+              <th width="30%" class="bg-vue-700 text-white font-medium px-4 py-2">Customer Name</th>
+              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2">Subtotal</th>
+              <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2">Tax</th>
+              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2">Grand Total</th>
+              <th width="20%" class="rounded-tr-md bg-vue-700 text-white font-medium px-4 py-2">Paid Amount</th>
+            </tr>
+          </thead>
+        </table>
+
+        <div class="table-body border-slate-300 rounded-bl-md rounded-br-md border mt-[-2px]">
+          <table width="100%">
+            <tbody>
+              <tr
+                v-for="invoice in salesInvoices"
+                :key="invoice.id"
+                class="bg-white hover:bg-gray-200 text-gray-800 border-b border-slate-300 cursor-pointer"
+                @click="() => router.push({ name: 'realtime-value', params: { id: invoice.id } })"
+              >
+                <td width="5%" class="pt-4 px-4 py-2">
+                  <div :style="{ backgroundColor: invoice.color }" class="w-4 h-4 rounded-full"></div>
+                </td>
+                <td width="30%" class="px-4 py-2">{{ invoice.customerName }}</td>
+                <td width="15%" class="px-4 py-2 text-right">{{ formatNumber(invoice.subtotalAmount) }}</td>
+                <td width="10%" class="px-4 py-2 text-right">{{ formatNumber(invoice.taxAmount) }}</td>
+                <td width="15%" class="px-4 py-2 text-right">{{ formatNumber(invoice.totalAmount) }}</td>
+                <td width="20%" class="py-2 text-right">
+                  <div :class="cn(
+                    'h-1 rounded-full bg-gray-200 mt-[-12px]',
+                  )">
+                    <div 
+                      :class="cn(
+                        'h-1 rounded-full',
+                        getPaidColor(invoice.paidPercentage),
+                      )"
+                      :style="{ 
+                        width: invoice.paidPercentage + '%',
+                      }"
+                    ></div>
+                  <div>{{ formatNumber(invoice.paidAmount) }}</div>
+                </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            v-if="salesInvoices.length === 0"
+            class="flex items-center justify-center h-full"
           >
-            <td class="px-4 py-2">
-              <div :style="{ backgroundColor: invoice.color }" class="w-4 h-4 rounded-full"></div>
-            </td>
-            <td class="px-4 py-2">{{ invoice.customerName }}</td>
-            <td class="px-4 py-2 text-right">{{ formatNumber(invoice.subtotalAmount) }}</td>
-            <td class="px-4 py-2 text-right">{{ formatNumber(invoice.taxAmount) }}</td>
-            <td class="px-4 py-2 text-right">{{ formatNumber(invoice.totalAmount) }}</td>
-            <td class="px-4 py-2 text-right">{{ formatNumber(invoice.paidAmount) }}</td>
-          </tr>
-        </tbody>
-      </table>
+            <div class="text-slate-500">No data available, click the button above to add fake data</div>
+        </div>
+        </div>
+      </div>
     </div>
   </main>
 </template>
+
+<style scoped>
+.table-container {
+  position: relative;
+  width: 100%;
+}
+
+.table-container thead {
+  position: sticky;
+  top: 0;
+  z-index: 10; /* Ensure header stays on top */
+}
+
+.table-body {
+  height: 500px; /* Adjust the height to your needs */
+  overflow-y: auto;
+}
+
+.table-body table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Optional: Keep the column widths consistent between header and body */
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+</style>

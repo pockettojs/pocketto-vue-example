@@ -36,6 +36,6 @@ export class SalesInvoice extends Model {
 
   get paidPercentage() {
     const rawPercentage = this.paidAmount / this.totalAmount * 100;
-    return rawPercentage.toFixed(2);
+    return rawPercentage;
   }
 }

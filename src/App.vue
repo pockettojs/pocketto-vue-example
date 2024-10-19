@@ -11,8 +11,8 @@ import HelloWorld from './components/HelloWorld.vue'
       <HelloWorld msg="You did it!" />
 
       <nav>
-        <RouterLink to="/realtime-value">Real Time Value Example</RouterLink>
         <RouterLink to="/realtime-list">Real Time List Example</RouterLink>
+        <RouterLink to="/realtime-value/new">Real Time Value Example</RouterLink>
       </nav>
     </div>
   </header>
