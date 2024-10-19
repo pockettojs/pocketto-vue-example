@@ -1,24 +1,19 @@
 <script setup lang="ts">
+import Alert from '@/components/Alert.vue';
+import BackButton from '@/components/BackButton.vue';
 import { useRealtimeValue } from '@/composables/useRealtimeValue';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
 import { formatNumber } from '@/utils/number';
 import { cn } from '@/utils/tailwind';
-import { onMounted, ref, watch } from 'vue';
+import { CheckCircle } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const id = route.params.id as string;
-const invoiceRef = ref<SalesInvoice>(new SalesInvoice());
-const invoice = useRealtimeValue<SalesInvoice>(invoiceRef as any);
+const id = route.params.id === 'new' ? undefined : route.params.id as string | undefined;
+const invoice = useRealtimeValue(SalesInvoice, id);
 const saved = ref(false);
-
-onMounted(async () => {
-  if (id === 'new') return;
-  const data = await SalesInvoice.find(id);
-  if (!data) return;
-  invoiceRef.value = data;
-});
 
 watch(() => saved.value, () => {
   if (saved.value) {
@@ -29,39 +24,22 @@ watch(() => saved.value, () => {
 });
 
 async function save() {
-  await invoiceRef.value?.save();
+  await invoice.value.save();
   saved.value = true;
 }
 </script>
 
 <template>
   <div>
-    <div
-    v-motion
-    v-if="saved"
-    class="absolute top-4 right-4 px-2 py-1 min-w-[100px] rounded-md bg-success font-medium text-white"
-    :initial="{
-      opacity: 0,
-      y: -200,
-    }"
-    :enter="{
-      opacity: 1,
-      y: 0,
-    }"
-    :leave="{
-      opacity: 0,
-      y: -200,
-    }"
-  >
-    Invoice saved!
-  </div>
+    <alert title="Invoice Saved!" :show="saved">
+      <template #icon>
+        <CheckCircle class="w-5 h-5 inline-block mr-2 mt-0.5" />
+      </template>
+    </alert>
     <div class="flex flex-row gap-4">
-      <button 
-        class="my-4 text-vue-700 font-medium py-2 px-4 active:scale-90 rounded"
+      <back-button
         @click="router.replace({ name: 'realtime-list' })"
-      >
-        Back
-      </button>
+      />
       <button
         class="my-4 bg-vue-700 hover:bg-vue-900 text-white active:scale-90 font-medium py-2 px-4 rounded"
         @click="save"
@@ -72,7 +50,10 @@ async function save() {
     <div class="flex flex-row gap-6">
       <div class="mt-4 w-[5%]">
         <label class="font-medium text-sm text-slate-500">Color</label>
-        <div class="w-8 h-8 mt-2 mx-1 rounded-full cursor-pointer" :style="{
+        <div :class="cn(
+          'w-8 h-8 mt-2 mx-1 rounded-full cursor-pointer',
+          !invoice.color && 'border border-slate-300',
+        )" :style="{
           backgroundColor: invoice.color,
         }"></div>
       </div>
