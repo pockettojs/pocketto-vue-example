@@ -36,6 +36,7 @@ export class SalesInvoice extends Model {
 
   get paidPercentage() {
     const rawPercentage = this.paidAmount / this.totalAmount * 100;
+    if (isNaN(rawPercentage)) return 0;
     return rawPercentage;
   }
 }
