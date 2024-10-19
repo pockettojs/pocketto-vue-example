@@ -25,8 +25,8 @@ watch(() => saved.value, () => {
   }
 });
 
-watch([() => invoice.value._meta._rev, () => saved.value], ([rev, isSaved], [oldRev]) => {
-  if (isSaved === undefined && rev !== oldRev && oldRev !== undefined) {
+watch(() => invoice.value._meta._rev, (newRev, oldRev) => {
+  if (newRev !== oldRev && oldRev !== undefined) {
     beingUpdated.value = true;
   }
 });
