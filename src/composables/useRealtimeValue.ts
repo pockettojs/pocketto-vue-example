@@ -1,8 +1,8 @@
 import { onDocChange, type BaseModel } from 'pocketto';
 import { ref, type Ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
-export function useRealtimeValue<T extends BaseModel>(initialValue: Ref<T>) {
-  const data = ref<T>(initialValue.value);
+export function useRealtimeValue<T extends BaseModel>(value: Ref<T>) {
+  const data = ref<T>(value.value);
   const changedDoc = ref<T | undefined>(undefined);
 
   const handleDocChange = async (id: string) => {
@@ -19,11 +19,15 @@ export function useRealtimeValue<T extends BaseModel>(initialValue: Ref<T>) {
     });
   });
 
+  watch(() => value?.value, async (doc) => {
+    data.value = doc;
+  });
+
   watch(() => changedDoc?.value, (newChangedDoc) => {
     if (newChangedDoc) {
       data.value = newChangedDoc;
     }
   });
 
-  return data;
+  return data as T;
 }

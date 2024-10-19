@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue';
 import { faker } from '@faker-js/faker';
 import { cn } from '@/utils/tailwind';
 import { useRouter } from 'vue-router';
+import { formatNumber } from '@/utils/number';
 
 const initList = ref<SalesInvoice[]>([]);
 const salesInvoices = useRealtimeList(SalesInvoice, { value: initList as any, order: 'desc' });
@@ -14,10 +15,6 @@ onMounted(async () => {
   const result = await SalesInvoice.all();
   initList.value = result;
 });
-
-function formatNumber(value: number) {
-  return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
 
 function getPaidColor(percentage: number) {
   if (percentage >= 50) {
