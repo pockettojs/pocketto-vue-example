@@ -6,13 +6,16 @@ export function useRealtimeValue<T extends BaseModel>(type: ModelStatic<T>, id?:
   const data = ref<T>(new type() as T);
   const changedDoc = ref<T | undefined>(undefined);
 
-  const handleDocChange = async (id: string) => {
-    if (id !== data.value.id) return;
-    const doc = await data.value.getClass().query().find(id) as T;
+  const handleDocChange = async (newId: string) => {
+    const modelName = new type().getClass().collectionName as string + '.';
+    newId = newId.replace(modelName, '');
+    if (newId !== data.value.id) return;
+    const doc = await data.value.getClass().query().find(newId) as T;
     changedDoc.value = doc;
   };
 
   onMounted(() => {
+    console.log('mounting');
     const event = onDocChange(handleDocChange);
 
     onBeforeUnmount(() => {
