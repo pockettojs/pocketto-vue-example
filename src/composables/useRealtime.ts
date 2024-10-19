@@ -2,7 +2,7 @@ import { onDocChange, type BaseModel } from 'pocketto';
 import type { ModelStatic } from 'pocketto/dist/src/definitions/Model';
 import { ref, watch, onMounted, onBeforeUnmount, type Ref } from 'vue';
 
-export function useRealtimeValue<T extends BaseModel>(type: ModelStatic<T>, id?: string) {
+export function useRealtime<T extends BaseModel>(type: ModelStatic<T>, id?: string) {
   const data = ref<T>(new type() as T);
   const changedDoc = ref<T | undefined>(undefined);
 

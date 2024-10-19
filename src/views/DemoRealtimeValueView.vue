@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Alert from '@/components/Alert.vue';
 import BackButton from '@/components/BackButton.vue';
-import { useRealtimeValue } from '@/composables/useRealtimeValue';
+import { useRealtime } from '@/composables/useRealtime';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
 import { formatNumber } from '@/utils/number';
 import { cn } from '@/utils/tailwind';
@@ -12,7 +12,7 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id === 'new' ? undefined : route.params.id as string | undefined;
-const invoice = useRealtimeValue(SalesInvoice, id);
+const invoice = useRealtime(SalesInvoice, id);
 const saved = ref<boolean | undefined>(undefined);
 const beingUpdated = ref(false);
 
