@@ -11,18 +11,17 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
   const {
     value,
     order,
+    orderBy,
     disableAutoAppend,
   } = config;
   const data = ref<Array<T>>(value?.value || []);
   const changedDoc = ref<T | undefined>(undefined);
 
   watch(() => value?.value, (newData) => {
-    console.log('newData: ', newData);
     data.value = newData as any;
   });
 
   const handleDocChange = async (id: string) => {
-    console.log('id: ', id);
     if (!(data.value instanceof Array)) return;
     const doc = await new type().getClass().query().find(id) as T;
     const sameModelType = new type().cName === doc.cName;
@@ -39,7 +38,6 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
   });
 
   watch(() => changedDoc?.value, (newChangedDoc) => {
-    console.log('newChangedDoc: ', newChangedDoc);
     const sameIdIndex = data.value.findIndex((d) => d.id === newChangedDoc.id);
     if (sameIdIndex !== -1) {
       data.value[sameIdIndex] = newChangedDoc;
@@ -48,6 +46,18 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
         data.value.unshift(newChangedDoc);
       } else if (order === "asc") {
         data.value.push(newChangedDoc);
+      }
+
+      if (orderBy) {
+        data.value.sort((a: any, b: any) => {
+          if (a[orderBy] > b[orderBy]) {
+            return order === "asc" ? 1 : -1;
+          }
+          if (a[orderBy] < b[orderBy]) {
+            return order === "asc" ? -1 : 1;
+          }
+          return 0;
+        });
       }
     }
   });

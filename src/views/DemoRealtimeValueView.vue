@@ -50,12 +50,16 @@ async function save() {
     <div class="flex flex-row gap-6">
       <div class="mt-4 w-[5%]">
         <label class="font-medium text-sm text-slate-500">Color</label>
-        <div :class="cn(
-          'w-8 h-8 mt-2 mx-1 rounded-full cursor-pointer',
-          !invoice.color && 'border border-slate-300',
-        )" :style="{
-          backgroundColor: invoice.color,
-        }"></div>
+        <div 
+          :class="cn(
+            'w-8 h-8 mt-2 mx-1 rounded-full cursor-pointer',
+            !invoice.color && 'border border-slate-300',
+          )" 
+          :style="{
+            backgroundColor: invoice.color,
+          }"
+          @click="invoice.setRandomHexColor()"
+        ></div>
       </div>
       <div class="mt-4 w-[95%]">
         <label class="font-medium text-sm text-slate-500">Customer Name</label>

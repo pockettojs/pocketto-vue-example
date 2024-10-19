@@ -12,7 +12,9 @@ const salesInvoices = useRealtimeList(SalesInvoice, { value: initList as any, or
 const router = useRouter();
 
 onMounted(async () => {
-  const result = await SalesInvoice.all();
+  const result = await SalesInvoice.query()
+    .orderBy('createdAt', 'desc')
+    .get();
   initList.value = result;
 });
 
