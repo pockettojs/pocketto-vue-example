@@ -1,25 +1,21 @@
-import { onDocChange, type BaseModel } from 'pocketto';
+import { onDocChange, QueryBuilder, type BaseModel } from 'pocketto';
 import type { ModelStatic } from 'pocketto/dist/src/definitions/Model';
-import { ref, type Ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, config: {
-  value?: Ref<Array<T>>;
+  condition?: (query: QueryBuilder<T>) => QueryBuilder<T>;
   order?: "asc" | "desc";
   orderBy?: keyof T;
   disableAutoAppend?: boolean;
 } = {}) {
   const {
-    value,
+    condition = (query) => query.orderBy('createdAt', 'desc'),
     order,
     orderBy,
     disableAutoAppend,
   } = config;
-  const data = ref<Array<T>>(value?.value || []);
+  const data = ref<Array<T>>([]);
   const changedDoc = ref<T | undefined>(undefined);
-
-  watch(() => value?.value, (newData) => {
-    data.value = newData as any;
-  });
 
   const handleDocChange = async (id: string) => {
     if (!(data.value instanceof Array)) return;
@@ -28,6 +24,11 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
     if (!sameModelType) return;
     changedDoc.value = doc;
   };
+
+  onMounted(async () => {
+    const docs = await condition(new type().getClass().query() as unknown as QueryBuilder<T>).get();
+    data.value = docs as T[];
+  });
 
   onMounted(() => {
     const event = onDocChange(handleDocChange);

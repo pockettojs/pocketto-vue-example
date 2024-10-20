@@ -7,8 +7,7 @@ import { cn } from '@/utils/cn';
 import { useRouter } from 'vue-router';
 import { formatNumber } from '@/utils/number';
 
-const initList = ref<SalesInvoice[]>([]);
-const salesInvoices = useRealtimeList(SalesInvoice, { value: initList as any, order: 'desc' });
+const salesInvoices = useRealtimeList(SalesInvoice);
 const router = useRouter();
 
 onMounted(async () => {
