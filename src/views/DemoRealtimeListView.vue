@@ -20,12 +20,12 @@ onMounted(async () => {
 
 function getPaidColor(percentage: number) {
   if (percentage >= 50) {
-    return 'bg-vue-500';
+    return 'bg-success';
   }
   if (percentage >= 20) {
-    return 'bg-yellow-500';
+    return 'bg-warning';
   }
-  return 'bg-red-500';
+  return 'bg-error';
 }
 
 </script>

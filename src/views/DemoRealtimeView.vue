@@ -97,7 +97,7 @@ async function save() {
           class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full" 
           :value="invoice.subtotalAmount"
           v-on:input="(event) => {
-            const value = parseFloat(event.target?.value || 0);
+            const value = parseFloat(event.target?.value || '0');
             invoice.taxAmount = value * invoice.taxRate / 100;
             const totalAmount = Number(value) + Number(invoice.taxAmount);
             invoice.totalAmount = totalAmount;
@@ -111,7 +111,7 @@ async function save() {
           class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full"
           :value="invoice.taxRate"
           v-on:input="(event) => {
-            const value = parseFloat(event.target?.value || 0);
+            const value = parseFloat(event.target?.value || '0');
             invoice.taxAmount = invoice.subtotalAmount * value / 100;
             const totalAmount = Number(invoice.subtotalAmount) + Number(invoice.taxAmount);
             invoice.totalAmount = totalAmount;
@@ -120,7 +120,6 @@ async function save() {
         />
       </div>
     </div>
-    
     <div class="flex flex-row gap-4">
       <div class="mt-4 w-1/2">
         <label class="font-medium text-sm text-slate-500">Tax Amount</label>
@@ -136,12 +135,12 @@ async function save() {
       <input
         :class="cn(
           'border rounded-md px-2 focus:outline-vue-500 h-12 w-full',
-          Number(invoice.paidAmount) > Number(invoice.totalAmount) && 'border-red-500 focus:outline-red-500',
+          Number(invoice.paidAmount) > Number(invoice.totalAmount) && 'border-error focus:outline-error',
         )"
         v-model="invoice.paidAmount"
       />
-      <div class="text-xs text-red-500" v-if="Number(invoice.paidAmount) > Number(invoice.totalAmount)">Paid amount should be less than total amount</div>
-      <div class="text-xs text-vue-500" v-if="Number(invoice.paidAmount) === Number(invoice.totalAmount)">All cleared!</div>
+      <div class="text-xs text-error" v-if="Number(invoice.paidAmount) > Number(invoice.totalAmount)">Paid amount should be less than total amount</div>
+      <div class="text-xs text-success" v-if="Number(invoice.paidAmount) === Number(invoice.totalAmount)">All cleared!</div>
     </div>
   </div>
 </template>
