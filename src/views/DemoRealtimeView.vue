@@ -103,11 +103,11 @@ async function save() {
           class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full" 
           :value="invoice.subtotalAmount"
           v-on:input="(event) => {
-            const value = parseFloat(event.target?.value || '0');
+            const value = parseFloat(event.target?.value || '');
             invoice.taxAmount = value * invoice.taxRate / 100;
             const totalAmount = Number(value) + Number(invoice.taxAmount);
             invoice.totalAmount = totalAmount;
-            invoice.subtotalAmount = Number(value);
+            invoice.subtotalAmount = event.target?.value;
           }"
         />
       </div>
@@ -117,11 +117,11 @@ async function save() {
           class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full"
           :value="invoice.taxRate"
           v-on:input="(event) => {
-            const value = parseFloat(event.target?.value || '0');
+            const value = parseFloat(event.target?.value || '');
             invoice.taxAmount = invoice.subtotalAmount * value / 100;
             const totalAmount = Number(invoice.subtotalAmount) + Number(invoice.taxAmount);
             invoice.totalAmount = totalAmount;
-            invoice.taxRate = Number(value);
+            invoice.taxRate = event.target?.value;
           }"
         />
       </div>
