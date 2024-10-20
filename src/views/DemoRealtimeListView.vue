@@ -49,7 +49,7 @@ function getPaidColor(percentage: number) {
             taxAmount = Math.round(taxAmount * 100) / 100;
             const totalAmount = subtotalAmount + taxAmount;
 
-            const customerName = `${faker.name.firstName()} ${faker.name.lastName()}`;
+            const customerName = `${faker.person.firstName()} ${faker.person.lastName()}`;
             const invoice = new SalesInvoice();
             invoice.fill({
               customerName,
