@@ -12,9 +12,15 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id === 'new' ? undefined : route.params.id as string | undefined;
-const invoice = useRealtime(SalesInvoice, id);
+let invoice = useRealtime(SalesInvoice, id);
 const saved = ref<boolean | undefined>(undefined);
 const beingUpdated = ref(false);
+
+watch(() => route.params.id, (newId, oldId) => {
+  if (newId !== oldId) {
+    invoice = useRealtime(SalesInvoice, newId as string);
+  }
+});
 
 watch(() => saved.value, () => {
   if (saved.value) {
