@@ -46,6 +46,11 @@ watch(() => beingUpdated.value, () => {
 });
 
 async function save() {
+  invoice.value.subtotalAmount = Number(invoice.value.subtotalAmount);
+  invoice.value.taxRate = Number(invoice.value.taxRate);
+  invoice.value.taxAmount = Number(invoice.value.taxAmount);
+  invoice.value.totalAmount = Number(invoice.value.totalAmount);
+  invoice.value.paidAmount = Number(invoice.value.paidAmount);
   await invoice.value.save();
   saved.value = true;
 }
