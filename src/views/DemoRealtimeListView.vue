@@ -10,13 +10,6 @@ import { formatNumber } from '@/utils/number';
 const salesInvoices = useRealtimeList(SalesInvoice);
 const router = useRouter();
 
-onMounted(async () => {
-  const result = await SalesInvoice.query()
-    .orderBy('createdAt', 'desc')
-    .get();
-  initList.value = result;
-});
-
 function getPaidColor(percentage: number) {
   if (percentage >= 50) {
     return 'bg-success';

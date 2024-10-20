@@ -4,12 +4,18 @@ import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, config: {
   condition?: (query: QueryBuilder<T>) => QueryBuilder<T>;
+  itemChange?: (doc: T) => void;
+  itemCreate?: (doc: T) => void;
+  itemUpdate?: (doc: T) => void;
   order?: "asc" | "desc";
   orderBy?: keyof T;
   disableAutoAppend?: boolean;
 } = {}) {
   const {
     condition = (query) => query.orderBy('createdAt', 'desc'),
+    itemChange,
+    itemCreate,
+    itemUpdate,
     order,
     orderBy,
     disableAutoAppend,
@@ -42,6 +48,7 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
     const sameIdIndex = data.value.findIndex((d) => d.id === newChangedDoc.id);
     if (sameIdIndex !== -1) {
       data.value[sameIdIndex] = newChangedDoc;
+      itemUpdate?.(newChangedDoc);
     } else if (!disableAutoAppend) {
       if (!order || order === "desc") {
         data.value.unshift(newChangedDoc);
@@ -59,7 +66,10 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
         }
         return 0;
       });
+
+      itemCreate?.(newChangedDoc);
     }
+    itemChange?.(newChangedDoc);
   });
 
   return data;
