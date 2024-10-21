@@ -4,9 +4,10 @@ import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, config: {
   condition?: (query: QueryBuilder<T>) => QueryBuilder<T>;
-  itemChange?: (doc: T) => void;
-  itemCreate?: (doc: T) => void;
-  itemUpdate?: (doc: T) => void;
+  itemChange?: (doc: T | undefined) => void;
+  itemCreate?: (doc: T | undefined) => void;
+  itemUpdate?: (doc: T | undefined) => void;
+  animationDelay?: number;
   order?: "asc" | "desc";
   orderBy?: keyof T;
   disableAutoAppend?: boolean;
@@ -16,6 +17,7 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
     itemChange,
     itemCreate,
     itemUpdate,
+    animationDelay,
     order,
     orderBy,
     disableAutoAppend,
@@ -49,6 +51,7 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
     if (sameIdIndex !== -1) {
       data.value[sameIdIndex] = newChangedDoc;
       itemUpdate?.(newChangedDoc);
+      setTimeout(() => itemUpdate?.(undefined), animationDelay || 1);
     } else if (!disableAutoAppend) {
       if (!order || order === "desc") {
         data.value.unshift(newChangedDoc);
@@ -68,8 +71,10 @@ export function useRealtimeList<T extends BaseModel>(type: ModelStatic<T>, confi
       });
 
       itemCreate?.(newChangedDoc);
+      setTimeout(() => itemCreate?.(undefined), animationDelay || 1);
     }
     itemChange?.(newChangedDoc);
+    setTimeout(() => itemChange?.(undefined), animationDelay || 1);
   });
 
   return data;

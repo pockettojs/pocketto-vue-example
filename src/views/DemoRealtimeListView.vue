@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { useRealtimeList } from '@/composables/useRealtimeList';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { faker } from '@faker-js/faker';
 import { cn } from '@/utils/cn';
 import { useRouter } from 'vue-router';
 import { formatNumber } from '@/utils/number';
+import HighlightableTr from '@/components/HighlightableTr.vue';
 
-const salesInvoices = useRealtimeList(SalesInvoice);
+const changedItem = ref<SalesInvoice>();
+const salesInvoices = useRealtimeList(SalesInvoice, {
+  animationDelay: 3000, 
+  itemChange: (item) => {
+    changedItem.value = item;
+  },
+});
 const router = useRouter();
 
 function getPaidColor(percentage: number) {
@@ -77,11 +84,13 @@ function getPaidColor(percentage: number) {
         <div class="table-body border-slate-300 rounded-bl-md rounded-br-md border mt-[-2px]">
           <table width="100%">
             <tbody>
-              <tr
+              <HighlightableTr
                 v-for="invoice in salesInvoices"
                 :key="invoice.id"
                 class="bg-white hover:bg-gray-200 text-gray-800 border-b border-slate-300 cursor-pointer"
                 @click="() => router.push({ name: 'realtime', params: { id: invoice.id } })"
+                :transition-color="invoice.color"
+                :start="changedItem?.id === invoice.id"
               >
                 <td width="5%" class="pt-4 px-4 py-2">
                   <div :style="{ backgroundColor: invoice.color }" class="w-4 h-4 rounded-full"></div>
@@ -106,7 +115,7 @@ function getPaidColor(percentage: number) {
                   <div class="text-right">{{ formatNumber(invoice.paidAmount) }}</div>
                 </div>
                 </td>
-              </tr>
+              </HighlightableTr>
             </tbody>
           </table>
           <div
