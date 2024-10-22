@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRealtimeList } from '@/composables/useRealtimeList';
 import { SalesInvoice } from '@/models/SalesInvoice.p';
 import { ref } from 'vue';
 import { faker } from '@faker-js/faker';
@@ -7,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { useRouter } from 'vue-router';
 import { formatNumber } from '@/utils/number';
 import HighlightableTr from '@/components/HighlightableTr.vue';
+import { useRealtimeList } from 'pocketto-vue';
 
 const changedItem = ref<SalesInvoice>();
 const salesInvoices = useRealtimeList(SalesInvoice, {
@@ -89,7 +89,7 @@ function getPaidColor(percentage: number) {
                 :key="invoice.id"
                 class="bg-white hover:bg-gray-200 text-gray-800 border-b border-slate-300 cursor-pointer"
                 @click="() => router.push({ name: 'realtime', params: { id: invoice.id } })"
-                :transition-color="invoice.color"
+                color="#e0f0eb"
                 :start="changedItem?.id === invoice.id"
               >
                 <td width="5%" class="pt-4 px-4 py-2">
