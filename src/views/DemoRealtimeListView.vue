@@ -71,12 +71,12 @@ function getPaidColor(percentage: number) {
         <table width="100%">
           <thead>
             <tr>
-              <th width="5%" class="rounded-tl-md bg-vue-700 text-white font-medium px-4 py-2"></th>
-              <th width="30%" class="bg-vue-700 text-white font-medium px-4 py-2">Customer Name</th>
-              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Subtotal</div></th>
-              <th width="10%" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Tax</div></th>
-              <th width="15%" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Total</div></th>
-              <th width="20%" class="rounded-tr-md bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Paid Amount</div></th>
+              <th style="width: 5%;" class="rounded-tl-md bg-vue-700 text-white font-medium px-4 py-2"></th>
+              <th style="width: 30%;" class="bg-vue-700 text-white font-medium px-4 py-2">Customer Name</th>
+              <th style="width: 15%;" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Subtotal</div></th>
+              <th style="width: 10%;" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Tax</div></th>
+              <th style="width: 15%;" class="bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Total</div></th>
+              <th style="width: 20%;" class="rounded-tr-md bg-vue-700 text-white font-medium px-4 py-2"><div class="text-right">Paid Amount</div></th>
             </tr>
           </thead>
         </table>
