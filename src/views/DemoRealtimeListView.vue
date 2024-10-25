@@ -81,13 +81,13 @@ function getPaidColor(percentage: number) {
           </thead>
         </table>
 
-        <div class="table-body border-slate-300 rounded-bl-md rounded-br-md border mt-[-2px]">
+        <div class="table-body border-slate-300 dark:border-slate-700 rounded-bl-md rounded-br-md border mt-[-2px]">
           <table width="100%">
             <tbody>
               <HighlightableTr
                 v-for="invoice in salesInvoices"
                 :key="invoice.id"
-                class="bg-white hover:bg-gray-200 text-gray-800 border-b border-slate-300 cursor-pointer"
+                class="bg-white dark:bg-[#181818] hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-300 border-b border-slate-300 dark:border-slate-700 cursor-pointer"
                 @click="() => router.push({ name: 'realtime', params: { id: invoice.id } })"
                 color="#e0f0eb"
                 :start="changedItem?.id === invoice.id"

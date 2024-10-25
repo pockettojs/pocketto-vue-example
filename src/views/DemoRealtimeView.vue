@@ -98,14 +98,14 @@ async function save() {
       </div>
       <div class="mt-4 w-[95%]">
         <label class="font-medium text-sm text-slate-500">Customer Name</label>
-        <input class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full" v-model="invoice.customerName" />
+        <input class="border rounded-md px-2 bg-transparent dark:text-slate-100 focus:outline-vue-500 h-12 w-full" v-model="invoice.customerName" />
       </div>
     </div>
     <div class="flex flex-row gap-4">
       <div class="mt-4 w-1/2">
         <label class="font-medium text-sm text-slate-500">Subtotal Amount</label>
         <input
-          class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full" 
+          class="border rounded-md px-2 bg-transparent dark:text-slate-100 focus:outline-vue-500 h-12 w-full" 
           :value="invoice.subtotalAmount"
           v-on:input="(event) => {
             const value = parseFloat(event.target?.value || '');
@@ -119,7 +119,7 @@ async function save() {
       <div class="mt-4 w-1/2">
         <label class="font-medium text-sm text-slate-500">Tax Rate (%)</label>
         <input
-          class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full"
+          class="border rounded-md px-2 bg-transparent dark:text-slate-100 focus:outline-vue-500 h-12 w-full"
           :value="invoice.taxRate"
           v-on:input="(event) => {
             const value = parseFloat(event.target?.value || '');
@@ -134,18 +134,18 @@ async function save() {
     <div class="flex flex-row gap-4">
       <div class="mt-4 w-1/2">
         <label class="font-medium text-sm text-slate-500">Tax Amount</label>
-        <input class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full disabled:opacity-50" disabled :value="formatNumber(invoice.taxAmount || 0)" />
+        <input class="border rounded-md px-2 bg-transparent dark:text-slate-100 focus:outline-vue-500 h-12 w-full disabled:opacity-50" disabled :value="formatNumber(invoice.taxAmount || 0)" />
       </div>
       <div class="mt-4 w-1/2">
         <label class="font-medium text-sm text-slate-500">Grant Total Amount</label>
-        <input class="border rounded-md px-2 focus:outline-vue-500 h-12 w-full disabled:opacity-50" disabled :value="formatNumber(invoice.totalAmount || 0)" />
+        <input class="border rounded-md px-2 bg-transparent dark:text-slate-100 focus:outline-vue-500 h-12 w-full disabled:opacity-50" disabled :value="formatNumber(invoice.totalAmount || 0)" />
       </div>
     </div>
     <div class="mt-4 w-full">
       <label class="font-medium text-sm text-slate-500">Paid Amount</label>
       <input
         :class="cn(
-          'border rounded-md px-2 focus:outline-vue-500 h-12 w-full',
+          'border rounded-md px-2 bg-transparent dark:text-slate-100 focus:outline-vue-500 h-12 w-full',
           Number(invoice.paidAmount) > Number(invoice.totalAmount) && 'border-error focus:outline-error',
         )"
         v-model="invoice.paidAmount"

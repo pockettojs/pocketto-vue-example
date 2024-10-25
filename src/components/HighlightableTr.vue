@@ -19,7 +19,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ThemeMode, useColorScheme } from '@/composables/useColorScheme';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
   start: {
@@ -39,7 +40,12 @@ const props = defineProps({
   },
 });
 
-const initialColor = ref('#ffffff');
+const theme = useColorScheme();
+const initialColor = ref('#000000');
+watch(() => theme.value, (newTheme) => {
+  initialColor.value = newTheme === ThemeMode.Dark ? '#000000' : '#ffffff';
+});
+
 
 const handleClick = () => {
   if (props.onClick) props.onClick();
