@@ -5,7 +5,7 @@
     :class="['h-full w-full', className]"
     @click="handleClick"
     :initial="{ backgroundColor: color }"
-    :enter="{ backgroundColor: initialColor }"
+    :enter="{ backgroundColor: '#ffffff' }"
     :leave="{ backgroundColor: color }"
     :delay="500"
   >
@@ -41,7 +41,7 @@ const props = defineProps({
 });
 
 const theme = useColorScheme();
-const initialColor = ref('#000000');
+const initialColor = ref(theme === ThemeMode.Dark ? '#000000' : '#ffffff');
 watch(() => theme.value, (newTheme) => {
   initialColor.value = newTheme === ThemeMode.Dark ? '#000000' : '#ffffff';
 });
