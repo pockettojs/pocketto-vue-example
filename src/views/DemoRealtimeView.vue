@@ -54,6 +54,12 @@ async function save() {
   await invoice.value.save();
   saved.value = true;
 }
+
+async function del() {
+  await invoice.value.delete(true);
+  router.replace({ name: 'realtime-list' });
+}
+
 </script>
 
 <template>
@@ -79,6 +85,13 @@ async function save() {
           @click="save"
         >
           Save
+        </button>
+        <button
+          :disabled="!id"
+          className="my-4 bg-error text-white active:scale-90 disabled:active:scale-100 disabled:opacity-50 font-medium py-2 px-4 rounded"
+          @click="del"
+        >
+          Delete
         </button>
       </div>
     </div>
